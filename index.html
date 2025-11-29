@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holiday Event 2025 - Team Vote</title>
+    <style>
+        :root {
+            --cw-red: #D22730;
+            --cw-black: #2d2a26;
+            --cw-grey: #636466;
+            --cw-teal: #0AA6A9;
+            --cw-gold: #E5B423;
+            --cw-light-grey: #f5f5f5;
+            --cw-white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--cw-light-grey);
+            color: var(--cw-black);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+        .header {
+            background: linear-gradient(135deg, var(--cw-red) 0%, #a81f26 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(210, 39, 48, 0.3);
+        }
+
+        .header h1 { font-size: 2.2rem; margin-bottom: 10px; }
+        .header .subtitle { font-size: 1.1rem; opacity: 0.95; }
+
+        .header .date-badge {
+            display: inline-block;
+            background: var(--cw-gold);
+            color: var(--cw-black);
+            padding: 8px 20px;
+            border-radius: 25px;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        .progress-container {
+            background: var(--cw-white);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50px;
+            right: 50px;
+            height: 3px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+            flex: 1;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: var(--cw-grey);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-number { background: var(--cw-red); color: white; }
+        .step.completed .step-number { background: var(--cw-teal); color: white; }
+
+        .step-label {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: var(--cw-grey);
+            text-align: center;
+        }
+
+        .step.active .step-label { color: var(--cw-red); font-weight: 600; }
+
+        .form-section {
+            background: var(--cw-white);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: var(--cw-black);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .emoji { font-size: 1.6rem; }
+        .section-subtitle { color: var(--cw-grey); margin-bottom: 25px; font-size: 0.95rem; }
+
+        .option-grid { display: grid; gap: 15px; }
+
+        .option-card {
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .option-card:hover { border-color: var(--cw-red); background: #fef9f9; }
+
+        .option-card.selected {
+            border-color: var(--cw-red);
+            background: linear-gradient(135deg, #fef5f5 0%, #fff 100%);
+            box-shadow: 0 0 0 3px rgba(210, 39, 48, 0.15);
+        }
+
+        .option-card input[type="radio"] { display: none; }
+
+        .option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .option-name { font-weight: 600; font-size: 1.1rem; color: var(--cw-black); }
+
+        .option-badge {
+            background: var(--cw-teal);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .option-description { color: var(--cw-grey); font-size: 0.9rem; margin-bottom: 10px; }
+
+        .option-details { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.85rem; }
+
+        .detail-tag {
+            background: var(--cw-light-grey);
+            padding: 4px 10px;
+            border-radius: 5px;
+            color: var(--cw-grey);
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .option-card.selected .checkmark { background: var(--cw-red); border-color: var(--cw-red); }
+
+        .checkmark::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .option-card.selected .checkmark::after { opacity: 1; }
+
+        .restaurant-card { padding: 15px; }
+        .restaurant-card .option-name { font-size: 1rem; }
+
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--cw-black); }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .input-group input:focus, .input-group select:focus { outline: none; border-color: var(--cw-red); }
+
+        .btn-container { display: flex; gap: 15px; margin-top: 30px; }
+
+        .btn {
+            padding: 14px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border: none;
+        }
+
+        .btn-primary { background: var(--cw-red); color: white; flex: 1; }
+
+        .btn-primary:hover {
+            background: #b8222a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(210, 39, 48, 0.3);
+        }
+
+        .btn-secondary { background: var(--cw-grey); color: white; }
+        .btn-secondary:hover { background: #4a4b4d; }
+        .btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .summary-card {
+            background: linear-gradient(135deg, var(--cw-black) 0%, #3d3a36 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card h3 { margin-bottom: 20px; font-size: 1.2rem; }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .summary-item:last-child { border-bottom: none; }
+        .summary-label { color: rgba(255,255,255,0.7); }
+        .summary-value { font-weight: 600; }
+
+        .success-message { text-align: center; padding: 60px 30px; }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--cw-teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 40px;
+        }
+
+        .success-message h2 { color: var(--cw-black); margin-bottom: 10px; }
+        .success-message p { color: var(--cw-grey); }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.6rem; }
+            .form-section { padding: 20px; }
+            .btn-container { flex-direction: column; }
+            .progress-bar::before { left: 30px; right: 30px; }
+            .step-label { font-size: 0.7rem; }
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎄 Holiday Event 2025</h1>
+            <p class="subtitle">Team Vote</p>
+            <div class="date-badge">📅 Recommended: Tuesday, December 9</div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="step active" id="step1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Event</div>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Restaurant</div>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Date</div>
+                </div>
+                <div class="step" id="step4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Submit</div>
+                </div>
+            </div>
+        </div>
+
+        <form id="pollForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            
+            <!-- Step 1: Event Selection -->
+            <div class="form-section active" id="section1">
+                <h2 class="section-title"><span class="emoji">🎪</span> Pick Your Event</h2>
+                <p class="section-subtitle">Choose the holiday activity you'd enjoy most with the team.</p>
+
+                <div class="option-grid">
+                    <label class="option-card" data-event="fontainebleau">
+                        <input type="radio" name="event" value="Fontainebleau Ice Rink" required>
+                        <div class="checkmark"></div>
+                        <div class="option-header">
+                            <div class="option-name">🧊 Fontainebleau Ice Rink</div>
+                        </div>
+                        <div class="option-description">The Strip's only ice rink! 7,500 sq ft of real ice on the 3rd floor pool deck.</div>
+                        <div class="option-details">
+                            <span class="detail-tag">📍 Las Vegas Strip</span>
+                            <span class="detail-tag">⏰ 5pm-11pm</span>
+                            <span class="detail-tag">🅿️ Free NV parking</span>
+                        </div>
+                    </label>
+
+                    <label class="option-card" data-event="ethelm">
+                        <input type="radio" name="event" value="Ethel M Cactus Garden Lights">
+                        <div class="checkmark"></div>
+                        <div class="option-header">
+                            <div class="option-name">🌵 Ethel M Cactus Garden Lights</div>
+                        </div>
+                        <div class="option-description">Henderson's 32-year tradition! 1M+ holiday lights in the botanical cactus garden.</div>
+                        <div class="option-details">
+                            <span class="detail-tag">📍 Henderson</span>
+                            <span class="detail-tag">⏰ 5pm-10pm</span>
+                            <span class="detail-tag">🍫 Chocolate factory</span>
+                        </div>
+                    </label>
+
+                    <label class="option-card" data-event="enchant">
+                        <input type="radio" name="event" value="Enchant Christmas">
+                        <div class="checkmark"></div>
+                        <div class="option-header">
+                            <div class="option-name">🎄 Enchant Christmas</div>
+                        </div>
+                        <div class="option-description">World's largest Christmas light maze! NEW "Night of the Nutcrackers" theme + ice skating included.</div>
+                        <div class="option-details">
+                            <span class="detail-tag">📍 Downtown Summerlin</span>
+                            <span class="detail-tag">⛸️ Skating included</span>
+                            <span class="detail-tag">🆕 Snow slide</span>
+                        </div>
+                    </label>
+
+                    <label class="option-card" data-event="highroller">
+                        <input type="radio" name="event" value="High Roller + Bellagio">
+                        <div class="checkmark"></div>
+                        <div class="option-header">
+                            <div class="option-name">🎡 High Roller + Bellagio</div>
+                        </div>
+                        <div class="option-description">550-foot observation wheel with Happy Half Hour (open bar!) + FREE Bellagio holiday conservatory.</div>
+                        <div class="option-details">
+                            <span class="detail-tag">📍 The Strip</span>
+                            <span class="detail-tag">🍸 Open bar option</span>
+                            <span class="detail-tag">🌺 Bellagio gardens</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="btn-container">
+                    <button type="button" class="btn btn-primary" onclick="nextStep(1)" id="btn1" disabled>Continue to Restaurant →</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Restaurant Selection -->
+            <div class="form-section" id="section2">
+                <h2 class="section-title"><span class="emoji">🍽️</span> Pick Your Restaurant</h2>
+                <p class="section-subtitle">Select your dinner preference based on your event choice.</p>
+
+                <!-- Fontainebleau Restaurants -->
+                <div class="restaurant-options hidden" id="restaurants-fontainebleau">
+                    <div class="option-grid">
+                        <label class="option-card restaurant-card">
+                            <input type="radio" name="restaurant" value="Mother Wolf (Roman Italian)">
+                            <div class="checkmark"></div>
+                            <div class="option-header">
+                                <div class="option-name">Mother Wolf</div>
+                            </div>
+                            <div class="option-description">Roman Italian • Chef Evan Funke's handmade pasta, wood-fired pizza, carbonara</div>
+                            <div class="option-details">
+                                <span class="detail-tag">🚶 2-3 min walk</span>
+                                <span class="detail-tag">🇮🇹 Italian</span>
+                            </div>
+                        </label>
+
+                        <label class="option-card restaurant-card">
+                            <input type="radio" name="restaurant" value="KYU (Asian BBQ)">
+                            <div class="checkmark"></div>
+                            <div class="option-header">
+                                <div class="option-name">KYU</div>
+                            </div>
+                            <div class="option-description">Asian Wood-Fire BBQ • 2024 Restaurant of Year, shareable plates, Korean fried chicken</div>
+                            <div class="option-details">
+                                <span class="detail-tag">🚶 2 min walk</span>
+                                <span class="detail-tag">🍖 Asian BBQ</span>
+                            </div>
+                        </label>
+
+                        <label class="option-card restaurant-card">
+                            <input type="radio" name="restaurant" value="Komodo (Southeast Asian)">
+                            <div class="checkmark"></div>
+                            <div class="option-header">
+                                <div class="option-name">Komodo</div>
+                            </div>
+                            <div class="option-description">Southeast Asian • Signature Peking Duck, sushi bar, high-energy atmosphere</div>
+                            <div class="option-details">
+                                <span class="detail-tag">🚶 3 min walk</span>
+                                <span class="detail-tag">🥢 Asian Fusion</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Ethel M Restaurants -->
+                <div class="restaurant-options hidden" id="restaurants-ethelm">
+                    <div class="option-grid">
+                        <label class="option-card restaurant-card">
+                            <input type="radio" name="restaurant" value="Bottiglia (Tuscan Italian)">
+                            <div class="checkmark"></div>
+                            <div class="option-header">
+                                <div class="option-name">Bottiglia</div>
+                            </div>
+                            <div class="option-description">Tuscan Italian • House-made pasta, fire pit patio, great wine selection</div>
+                            <div class="option-details">
+                                <span class="detail-tag">🚗 10 min</span>
+                                <span class="detail-tag">🇮🇹 Italian</span>
+                            </div>
+                        </label>
+
+                        <label class="option-card restaurant-card">
+                            <input type="radio" name="restaurant" value="Todd's Unique Dining (Fusion)">
+                            <div class="checkmark"></div>
+                            <div class="option-header">
+                                <div class="option-name">Todd's Unique Dining</div>
+                            </div>
+                            <div class="option-description">Fusion Steakhouse • Local gem, fresh seafood daily, calm & cozy atmosphere</div>
+                            <div class="option-details">
+                                <span class="detail-tag">🚗 8-10 min</span>
+                                <span class="detail-tag">🍽️ Fusion</span>
+                            </div>
+                        </label>
+
+                        <label class="option-card restaurant-card">
+                            <input type="radio" name="restaurant" value="King's Fish House (Seafood)">
+                            <div class="checkmark"></div>
+                            <div class="option-header">
+                                <div class="option-name">King's Fish House</div>
+                            </div>
+                            <div class="option-description">Fresh Seafood • Daily catches, oyster bar, seasonal specials</div>
+                            <div class="option-details">
+                                <span class="detail-tag">🚗 10 min</span>
+                                <span class="detail-tag">🦞 Seafood</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Enchant Restaurants -->
+                <div class="restaurant-options hidden" id="restaurants-enchant">
+                    <div class="option-grid">
+                        <label class="option-card restaurant-card">
+                            <input type="radio" name="restaurant" value="JING (Modern Asian)">
+                            <div class="checkmark"></div>
+                            <div class="option-header">
+                                <div class="option-name">JING</div>
+                            </div>
+                            <div class="option-description">Modern Asian • Shareable plates, premium sushi, trendy atmosphere</div>
+                            <div class="option-details">
+                                <span class="detail-tag">🚶 Walking distance</span>
+                                <span class="detail-tag">🥢 Asian Fusion</span>
+                            </div>
+                        </label>
+
+                        <label class="option-card restaurant-card">
+                            <input type="radio" name="restaurant" value="La Neta Cocina (Modern Mexican)">
+                            <div class="checkmark"></div>
+                            <div class="option-header">
+                                <div class="option-name">La Neta Cocina</div>
+                            </div>
+                            <div class="option-description">Modern Mexican • Elevated tacos, birria, craft margaritas, vibrant vibe</div>
+                            <div class="option-details">
+                                <span class="detail-tag">🚶 Walking distance</span>
+                                <span class="detail-tag">🌮 Mexican</span>
+                            </div>
+                        </label>
+
+                        <label class="option-card restaurant-card">
+                            <input type="radio" name="restaurant" value="Grape Street Café (California Bistro)">
+                            <div class="checkmark"></div>
+                            <div class="option-header">
+                                <div class="option-name">Grape Street Café</div>
+                            </div>
+                            <div class="option-description">California Bistro • 26-year favorite, 65+ wines, live music Thu-Fri</div>
+                            <div class="option-details">
+                                <span class="detail-tag">🚶 Walking distance</span>
+                                <span class="detail-tag">🍷 Wine Bar</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- High Roller Restaurants -->
+                <div class="restaurant-options hidden" id="restaurants-highroller">
+                    <div class="option-grid">
+                        <label class="option-card restaurant-card">
+                            <input type="radio" name="restaurant" value="Mon Ami Gabi (French Bistro)">
+                            <div class="checkmark"></div>
+                            <div class="option-header">
+                                <div class="option-name">Mon Ami Gabi</div>
+                            </div>
+                            <div class="option-description">French Bistro • Steak frites, Bellagio fountain views, classic elegance</div>
+                            <div class="option-details">
+                                <span class="detail-tag">🚶 5 min walk</span>
+                                <span class="detail-tag">🇫🇷 French</span>
+                            </div>
+                        </label>
+
+                        <label class="option-card restaurant-card">
+                            <input type="radio" name="restaurant" value="Yardbird (Southern Comfort)">
+                            <div class="checkmark"></div>
+                            <div class="option-header">
+                                <div class="option-name">Yardbird</div>
+                            </div>
+                            <div class="option-description">Southern Comfort • Famous fried chicken, biscuits, bourbon cocktails</div>
+                            <div class="option-details">
+                                <span class="detail-tag">🚶 10 min walk</span>
+                                <span class="detail-tag">🍗 Southern</span>
+                            </div>
+                        </label>
+
+                        <label class="option-card restaurant-card">
+                            <input type="radio" name="restaurant" value="Beauty & Essex (Tapas)">
+                            <div class="checkmark"></div>
+                            <div class="option-header">
+                                <div class="option-name">Beauty & Essex</div>
+                            </div>
+                            <div class="option-description">Speakeasy Tapas • Hidden entrance, shareable plates, glamorous atmosphere</div>
+                            <div class="option-details">
+                                <span class="detail-tag">🚶 8 min walk</span>
+                                <span class="detail-tag">🍸 Speakeasy</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(2)">← Back</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep(2)" id="btn2" disabled>Continue to Date →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Date Selection -->
+            <div class="form-section" id="section3">
+                <h2 class="section-title"><span class="emoji">📅</span> Confirm Your Date</h2>
+                <p class="section-subtitle">All dates have good availability. Tuesday Dec 9 is recommended for lighter crowds.</p>
+
+                <div class="option-grid">
+                    <label class="option-card">
+                        <input type="radio" name="date" value="Tuesday, December 9, 2025" required>
+                        <div class="checkmark"></div>
+                        <div class="option-header">
+                            <div class="option-name">Tuesday, December 9</div>
+                            <div class="option-badge">⭐ Recommended</div>
+                        </div>
+                        <div class="option-description">Best availability + lightest crowds.</div>
+                    </label>
+
+                    <label class="option-card">
+                        <input type="radio" name="date" value="Wednesday, December 10, 2025">
+                        <div class="checkmark"></div>
+                        <div class="option-header">
+                            <div class="option-name">Wednesday, December 10</div>
+                        </div>
+                        <div class="option-description">Mid-week, moderate crowds.</div>
+                    </label>
+
+                    <label class="option-card">
+                        <input type="radio" name="date" value="Monday, December 15, 2025">
+                        <div class="checkmark"></div>
+                        <div class="option-header">
+                            <div class="option-name">Monday, December 15</div>
+                        </div>
+                        <div class="option-description">Last quiet Monday before Christmas rush.</div>
+                    </label>
+
+                    <label class="option-card">
+                        <input type="radio" name="date" value="Thursday, December 11, 2025">
+                        <div class="checkmark"></div>
+                        <div class="option-header">
+                            <div class="option-name">Thursday, December 11</div>
+                        </div>
+                        <div class="option-description">Weekday, before the holiday rush.</div>
+                    </label>
+                </div>
+
+                <div class="btn-container">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(3)">← Back</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep(3)" id="btn3" disabled>Review & Submit →</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Review & Submit -->
+            <div class="form-section" id="section4">
+                <h2 class="section-title"><span class="emoji">✅</span> Review Your Vote</h2>
+                <p class="section-subtitle">Confirm your selections and submit your vote.</p>
+
+                <div class="summary-card">
+                    <h3>Your Selections</h3>
+                    <div class="summary-item">
+                        <span class="summary-label">Event</span>
+                        <span class="summary-value" id="summary-event">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Restaurant</span>
+                        <span class="summary-value" id="summary-restaurant">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Date</span>
+                        <span class="summary-value" id="summary-date">-</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="name">Your Name *</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your name">
+                </div>
+
+                <div class="input-group">
+                    <label for="comments">Comments (Optional)</label>
+                    <input type="text" id="comments" name="comments" placeholder="Dietary restrictions, preferences, etc.">
+                </div>
+
+                <input type="hidden" name="_subject" value="🎄 Holiday Event Vote Submitted">
+
+                <div class="btn-container">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(4)">← Back</button>
+                    <button type="submit" class="btn btn-primary">Submit Vote 🗳️</button>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="form-section" id="section-success">
+                <div class="success-message">
+                    <div class="success-icon">🎉</div>
+                    <h2>Vote Submitted!</h2>
+                    <p>Thanks for participating. Your preferences have been recorded.</p>
+                    <p style="margin-top: 15px; color: var(--cw-grey);">Results will be shared once everyone votes.</p>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedEvent = null;
+
+        document.querySelectorAll('.option-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const section = this.closest('.form-section, .restaurant-options');
+                const cards = section.querySelectorAll('.option-card');
+                
+                cards.forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+
+                if (currentStep === 1) {
+                    document.getElementById('btn1').disabled = false;
+                    selectedEvent = this.dataset.event;
+                } else if (currentStep === 2) {
+                    document.getElementById('btn2').disabled = false;
+                } else if (currentStep === 3) {
+                    document.getElementById('btn3').disabled = false;
+                }
+            });
+        });
+
+        function updateProgress() {
+            for (let i = 1; i <= 4; i++) {
+                const step = document.getElementById('step' + i);
+                step.classList.remove('active', 'completed');
+                
+                if (i < currentStep) step.classList.add('completed');
+                else if (i === currentStep) step.classList.add('active');
+            }
+        }
+
+        function showRestaurants() {
+            document.querySelectorAll('.restaurant-options').forEach(el => el.classList.add('hidden'));
+            
+            if (selectedEvent) {
+                const restaurantSection = document.getElementById('restaurants-' + selectedEvent);
+                if (restaurantSection) restaurantSection.classList.remove('hidden');
+            }
+
+            document.querySelectorAll('#section2 .option-card').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('#section2 input[type="radio"]').forEach(r => r.checked = false);
+            document.getElementById('btn2').disabled = true;
+        }
+
+        function updateSummary() {
+            const event = document.querySelector('input[name="event"]:checked');
+            const restaurant = document.querySelector('input[name="restaurant"]:checked');
+            const date = document.querySelector('input[name="date"]:checked');
+
+            document.getElementById('summary-event').textContent = event ? event.value : '-';
+            document.getElementById('summary-restaurant').textContent = restaurant ? restaurant.value : '-';
+            document.getElementById('summary-date').textContent = date ? date.value : '-';
+        }
+
+        function nextStep(from) {
+            if (from === 1) showRestaurants();
+            
+            document.getElementById('section' + from).classList.remove('active');
+            document.getElementById('section' + (from + 1)).classList.add('active');
+            currentStep = from + 1;
+            updateProgress();
+
+            if (from === 3) updateSummary();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function prevStep(to) {
+            document.getElementById('section' + to).classList.remove('active');
+            document.getElementById('section' + (to - 1)).classList.add('active');
+            currentStep = to - 1;
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.getElementById('pollForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this),
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('section4').classList.remove('active');
+                    document.getElementById('section-success').classList.add('active');
+                    
+                    for (let i = 1; i <= 4; i++) {
+                        document.getElementById('step' + i).classList.add('completed');
+                        document.getElementById('step' + i).classList.remove('active');
+                    }
+                } else {
+                    alert('There was an error submitting your vote. Please try again.');
+                }
+            })
+            .catch(error => alert('There was an error submitting your vote. Please try again.'));
+        });
+    </script>
+</body>
+</html>
