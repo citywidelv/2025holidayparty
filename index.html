@@ -13,6 +13,9 @@
             --cw-gold: #E5B423;
             --cw-light-grey: #f5f5f5;
             --cw-white: #ffffff;
+            /* Theme colors */
+            --theme-primary: var(--cw-red);
+            --theme-secondary: var(--cw-gold);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,7 +25,15 @@
             background: var(--cw-light-grey);
             color: var(--cw-black);
             line-height: 1.6;
+            transition: background 0.5s ease;
         }
+
+        /* Theme backgrounds */
+        body.theme-fontainebleau { background: linear-gradient(180deg, #e8f4f8 0%, #f5f5f5 30%); }
+        body.theme-ethelm { background: linear-gradient(180deg, #fdf6e3 0%, #f5f5f5 30%); }
+        body.theme-enchant { background: linear-gradient(180deg, #f0e6f6 0%, #f5f5f5 30%); }
+        body.theme-highroller { background: linear-gradient(180deg, #e6f0f5 0%, #f5f5f5 30%); }
+        body.theme-christmas { background: linear-gradient(180deg, #1a472a 0%, #2d5a3f 15%, #f5f5f5 40%); }
 
         .container { max-width: 800px; margin: 0 auto; padding: 20px; }
 
@@ -34,6 +45,29 @@
             border-radius: 12px;
             margin-bottom: 30px;
             box-shadow: 0 4px 15px rgba(210, 39, 48, 0.3);
+            transition: all 0.5s ease;
+        }
+
+        /* Themed headers */
+        .header.theme-fontainebleau {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+            box-shadow: 0 4px 15px rgba(30, 58, 95, 0.3);
+        }
+        .header.theme-ethelm {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+        }
+        .header.theme-enchant {
+            background: linear-gradient(135deg, #4a1259 0%, #6b2d7b 100%);
+            box-shadow: 0 4px 15px rgba(74, 18, 89, 0.3);
+        }
+        .header.theme-highroller {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            box-shadow: 0 4px 15px rgba(26, 26, 46, 0.3);
+        }
+        .header.theme-christmas {
+            background: linear-gradient(135deg, #165B33 0%, #146B3A 50%, #BB2528 100%);
+            box-shadow: 0 4px 15px rgba(22, 91, 51, 0.3);
         }
 
         .header h1 { font-size: 2.2rem; margin-bottom: 10px; }
@@ -48,6 +82,16 @@
             margin-top: 15px;
             font-weight: 600;
         }
+
+        .theme-indicator {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .theme-indicator.visible { display: inline-flex; }
 
         .progress-container {
             background: var(--cw-white);
@@ -180,7 +224,7 @@
 
         .option-description { color: var(--cw-grey); font-size: 0.9rem; margin-bottom: 10px; }
 
-        .option-details { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.85rem; }
+        .option-details { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.85rem; margin-bottom: 10px; }
 
         .detail-tag {
             background: var(--cw-light-grey);
@@ -188,6 +232,18 @@
             border-radius: 5px;
             color: var(--cw-grey);
         }
+
+        .learn-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--cw-teal);
+            font-size: 0.85rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .learn-more:hover { color: #088a8c; text-decoration: underline; }
 
         .checkmark {
             position: absolute;
@@ -264,6 +320,11 @@
             margin-bottom: 25px;
         }
 
+        /* Christmas themed summary */
+        .summary-card.theme-christmas {
+            background: linear-gradient(135deg, #165B33 0%, #146B3A 100%);
+        }
+
         .summary-card h3 { margin-bottom: 20px; font-size: 1.2rem; }
 
         .summary-item {
@@ -294,6 +355,31 @@
         .success-message h2 { color: var(--cw-black); margin-bottom: 10px; }
         .success-message p { color: var(--cw-grey); }
 
+        /* Christmas decorations */
+        .christmas-decor {
+            display: none;
+            justify-content: center;
+            gap: 15px;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .christmas-decor.visible { display: flex; }
+
+        /* Snowflakes for Christmas theme */
+        .snowflake {
+            position: fixed;
+            color: white;
+            font-size: 1.5rem;
+            opacity: 0.7;
+            pointer-events: none;
+            animation: fall linear infinite;
+            z-index: 1000;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(360deg); }
+        }
+
         @media (max-width: 600px) {
             .header h1 { font-size: 1.6rem; }
             .form-section { padding: 20px; }
@@ -307,10 +393,14 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <div class="header" id="main-header">
             <h1>🎄 Holiday Event 2025</h1>
             <p class="subtitle">Team Vote</p>
             <div class="date-badge">📅 Recommended: Monday, December 15</div>
+            <div class="theme-indicator" id="theme-indicator">
+                <span id="theme-emoji">🧊</span>
+                <span id="theme-name">Ice Rink Adventure</span>
+            </div>
         </div>
 
         <div class="progress-container">
@@ -342,7 +432,7 @@
                 <p class="section-subtitle">Choose the holiday activity you'd enjoy most with the team.</p>
 
                 <div class="option-grid">
-                    <label class="option-card" data-event="fontainebleau">
+                    <label class="option-card" data-event="fontainebleau" data-emoji="🧊" data-theme-name="Ice Rink Adventure">
                         <input type="radio" name="event" value="Fontainebleau Ice Rink" required>
                         <div class="checkmark"></div>
                         <div class="option-header">
@@ -354,9 +444,10 @@
                             <span class="detail-tag">⏰ 5pm-11pm</span>
                             <span class="detail-tag">🅿️ Free NV parking</span>
                         </div>
+                        <a href="https://www.fontainebleaulasvegas.com/experiences/oasis-ice-rink/" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                     </label>
 
-                    <label class="option-card" data-event="ethelm">
+                    <label class="option-card" data-event="ethelm" data-emoji="🌵" data-theme-name="Cactus Garden Lights">
                         <input type="radio" name="event" value="Ethel M Cactus Garden Lights">
                         <div class="checkmark"></div>
                         <div class="option-header">
@@ -368,9 +459,10 @@
                             <span class="detail-tag">⏰ 5pm-10pm</span>
                             <span class="detail-tag">🍫 Chocolate factory</span>
                         </div>
+                        <a href="https://www.ethelm.com/en-us/locations/henderson-flagship/cactus-garden/holiday-cactus-garden" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                     </label>
 
-                    <label class="option-card" data-event="enchant">
+                    <label class="option-card" data-event="enchant" data-emoji="🎄" data-theme-name="Christmas Light Maze">
                         <input type="radio" name="event" value="Enchant Christmas">
                         <div class="checkmark"></div>
                         <div class="option-header">
@@ -382,9 +474,10 @@
                             <span class="detail-tag">⛸️ Skating included</span>
                             <span class="detail-tag">🆕 Snow slide</span>
                         </div>
+                        <a href="https://www.enchantchristmas.com/las-vegas/" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                     </label>
 
-                    <label class="option-card" data-event="highroller">
+                    <label class="option-card" data-event="highroller" data-emoji="🎡" data-theme-name="High Roller Experience">
                         <input type="radio" name="event" value="High Roller + Bellagio">
                         <div class="checkmark"></div>
                         <div class="option-header">
@@ -396,6 +489,7 @@
                             <span class="detail-tag">🍸 Open bar option</span>
                             <span class="detail-tag">🌺 Bellagio gardens</span>
                         </div>
+                        <a href="https://www.caesars.com/linq/things-to-do/attractions/high-roller" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                     </label>
                 </div>
 
@@ -407,7 +501,7 @@
             <!-- Step 2: Restaurant Selection -->
             <div class="form-section" id="section2">
                 <h2 class="section-title"><span class="emoji">🍽️</span> Pick Your Restaurant</h2>
-                <p class="section-subtitle">Select your dinner preference based on your event choice.</p>
+                <p class="section-subtitle" id="restaurant-subtitle">Select your dinner preference based on your event choice.</p>
 
                 <!-- Fontainebleau Restaurants -->
                 <div class="restaurant-options hidden" id="restaurants-fontainebleau">
@@ -423,6 +517,7 @@
                                 <span class="detail-tag">🚶 2-3 min walk</span>
                                 <span class="detail-tag">🇮🇹 Italian</span>
                             </div>
+                            <a href="https://www.fontainebleaulasvegas.com/dining/restaurants/mother-wolf/" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                         </label>
 
                         <label class="option-card restaurant-card">
@@ -436,6 +531,7 @@
                                 <span class="detail-tag">🚶 2 min walk</span>
                                 <span class="detail-tag">🍖 Asian BBQ</span>
                             </div>
+                            <a href="https://www.fontainebleaulasvegas.com/dining/restaurants/kyu-las-vegas/" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                         </label>
 
                         <label class="option-card restaurant-card">
@@ -449,6 +545,7 @@
                                 <span class="detail-tag">🚶 3 min walk</span>
                                 <span class="detail-tag">🥢 Asian Fusion</span>
                             </div>
+                            <a href="https://www.fontainebleaulasvegas.com/dining/restaurants/komodo/" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                         </label>
                     </div>
                 </div>
@@ -467,6 +564,7 @@
                                 <span class="detail-tag">🚗 10 min</span>
                                 <span class="detail-tag">🇮🇹 Italian</span>
                             </div>
+                            <a href="https://www.bottigliacucina.com/" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                         </label>
 
                         <label class="option-card restaurant-card">
@@ -480,6 +578,7 @@
                                 <span class="detail-tag">🚗 8-10 min</span>
                                 <span class="detail-tag">🍽️ Fusion</span>
                             </div>
+                            <a href="https://www.toddsuniquedining.com/" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                         </label>
 
                         <label class="option-card restaurant-card">
@@ -493,6 +592,7 @@
                                 <span class="detail-tag">🚗 10 min</span>
                                 <span class="detail-tag">🦞 Seafood</span>
                             </div>
+                            <a href="https://www.kingsfishhouse.com/locations/henderson/" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                         </label>
                     </div>
                 </div>
@@ -511,6 +611,7 @@
                                 <span class="detail-tag">🚶 Walking distance</span>
                                 <span class="detail-tag">🥢 Asian Fusion</span>
                             </div>
+                            <a href="https://www.jinglv.com/" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                         </label>
 
                         <label class="option-card restaurant-card">
@@ -524,6 +625,7 @@
                                 <span class="detail-tag">🚶 Walking distance</span>
                                 <span class="detail-tag">🌮 Mexican</span>
                             </div>
+                            <a href="https://www.lanetacocina.com/" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                         </label>
 
                         <label class="option-card restaurant-card">
@@ -537,6 +639,7 @@
                                 <span class="detail-tag">🚶 Walking distance</span>
                                 <span class="detail-tag">🍷 Wine Bar</span>
                             </div>
+                            <a href="https://grapestreetcafe.com/" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                         </label>
                     </div>
                 </div>
@@ -555,6 +658,7 @@
                                 <span class="detail-tag">🚶 5 min walk</span>
                                 <span class="detail-tag">🇫🇷 French</span>
                             </div>
+                            <a href="https://www.monamigabi.com/location/las-vegas/" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                         </label>
 
                         <label class="option-card restaurant-card">
@@ -568,6 +672,7 @@
                                 <span class="detail-tag">🚶 10 min walk</span>
                                 <span class="detail-tag">🍗 Southern</span>
                             </div>
+                            <a href="https://www.rfrfood.com/yardbird/las-vegas/" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                         </label>
 
                         <label class="option-card restaurant-card">
@@ -581,6 +686,7 @@
                                 <span class="detail-tag">🚶 8 min walk</span>
                                 <span class="detail-tag">🍸 Speakeasy</span>
                             </div>
+                            <a href="https://www.beautyandessex.com/las-vegas/" target="_blank" class="learn-more" onclick="event.stopPropagation()">Learn more →</a>
                         </label>
                     </div>
                 </div>
@@ -594,7 +700,7 @@
             <!-- Step 3: Date Selection -->
             <div class="form-section" id="section3">
                 <h2 class="section-title"><span class="emoji">📅</span> Confirm Your Date</h2>
-                <p class="section-subtitle">All dates have good availability. Tuesday Dec 9 is recommended for lighter crowds.</p>
+                <p class="section-subtitle">All dates have good availability. Monday Dec 15 is recommended for lighter crowds.</p>
 
                 <div class="option-grid">
                     <label class="option-card">
@@ -643,11 +749,15 @@
 
             <!-- Step 4: Review & Submit -->
             <div class="form-section" id="section4">
+                <div class="christmas-decor visible" id="christmas-decor">
+                    🎄 ⭐ 🎁 ❄️ 🎅 ❄️ 🎁 ⭐ 🎄
+                </div>
+                
                 <h2 class="section-title"><span class="emoji">✅</span> Review Your Vote</h2>
                 <p class="section-subtitle">Confirm your selections and submit your vote.</p>
 
-                <div class="summary-card">
-                    <h3>Your Selections</h3>
+                <div class="summary-card theme-christmas" id="summary-card">
+                    <h3>🎄 Your Holiday Selections</h3>
                     <div class="summary-item">
                         <span class="summary-label">Event</span>
                         <span class="summary-value" id="summary-event">-</span>
@@ -682,11 +792,14 @@
 
             <!-- Success Message -->
             <div class="form-section" id="section-success">
+                <div class="christmas-decor visible">
+                    🎄 ⭐ 🎁 ❄️ 🎅 ❄️ 🎁 ⭐ 🎄
+                </div>
                 <div class="success-message">
                     <div class="success-icon">🎉</div>
                     <h2>Vote Submitted!</h2>
                     <p>Thanks for participating. Your preferences have been recorded.</p>
-                    <p style="margin-top: 15px; color: var(--cw-grey);">Results will be shared once everyone votes.</p>
+                    <p style="margin-top: 15px; color: var(--cw-grey);">Results will be shared once everyone votes. Happy Holidays! 🎄</p>
                 </div>
             </div>
         </form>
@@ -695,6 +808,14 @@
     <script>
         let currentStep = 1;
         let selectedEvent = null;
+        let selectedTheme = null;
+
+        const themeData = {
+            fontainebleau: { emoji: '🧊', name: 'Ice Rink Adventure', subtitle: 'Restaurants at Fontainebleau Las Vegas' },
+            ethelm: { emoji: '🌵', name: 'Cactus Garden Lights', subtitle: 'Restaurants near Ethel M in Henderson' },
+            enchant: { emoji: '🎄', name: 'Christmas Light Maze', subtitle: 'Restaurants at Downtown Summerlin' },
+            highroller: { emoji: '🎡', name: 'High Roller Experience', subtitle: 'Restaurants on The Strip' }
+        };
 
         document.querySelectorAll('.option-card').forEach(card => {
             card.addEventListener('click', function() {
@@ -707,6 +828,7 @@
                 if (currentStep === 1) {
                     document.getElementById('btn1').disabled = false;
                     selectedEvent = this.dataset.event;
+                    selectedTheme = this.dataset.event;
                 } else if (currentStep === 2) {
                     document.getElementById('btn2').disabled = false;
                 } else if (currentStep === 3) {
@@ -714,6 +836,61 @@
                 }
             });
         });
+
+        function applyTheme(theme) {
+            const body = document.body;
+            const header = document.getElementById('main-header');
+            const indicator = document.getElementById('theme-indicator');
+            
+            // Remove all theme classes
+            body.className = '';
+            header.className = 'header';
+            
+            if (theme && themeData[theme]) {
+                body.classList.add('theme-' + theme);
+                header.classList.add('theme-' + theme);
+                
+                document.getElementById('theme-emoji').textContent = themeData[theme].emoji;
+                document.getElementById('theme-name').textContent = themeData[theme].name;
+                indicator.classList.add('visible');
+                
+                document.getElementById('restaurant-subtitle').textContent = themeData[theme].subtitle;
+            }
+        }
+
+        function applyChristmasTheme() {
+            const body = document.body;
+            const header = document.getElementById('main-header');
+            
+            body.className = 'theme-christmas';
+            header.className = 'header theme-christmas';
+            
+            document.getElementById('theme-indicator').classList.remove('visible');
+            
+            // Add snowflakes
+            createSnowflakes();
+        }
+
+        function createSnowflakes() {
+            // Remove existing snowflakes
+            document.querySelectorAll('.snowflake').forEach(s => s.remove());
+            
+            const snowflakes = ['❄', '❅', '❆', '✻', '✼'];
+            for (let i = 0; i < 15; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                snowflake.style.left = Math.random() * 100 + 'vw';
+                snowflake.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowflake.style.fontSize = (Math.random() * 1 + 0.8) + 'rem';
+                document.body.appendChild(snowflake);
+            }
+        }
+
+        function removeSnowflakes() {
+            document.querySelectorAll('.snowflake').forEach(s => s.remove());
+        }
 
         function updateProgress() {
             for (let i = 1; i <= 4; i++) {
@@ -749,22 +926,48 @@
         }
 
         function nextStep(from) {
-            if (from === 1) showRestaurants();
+            if (from === 1) {
+                showRestaurants();
+                applyTheme(selectedTheme);
+            }
+            
+            if (from === 2) {
+                // Remove event theme when going to date selection
+                document.body.className = '';
+                document.getElementById('main-header').className = 'header';
+                document.getElementById('theme-indicator').classList.remove('visible');
+            }
+            
+            if (from === 3) {
+                updateSummary();
+                applyChristmasTheme();
+            }
             
             document.getElementById('section' + from).classList.remove('active');
             document.getElementById('section' + (from + 1)).classList.add('active');
             currentStep = from + 1;
             updateProgress();
 
-            if (from === 3) updateSummary();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function prevStep(to) {
+            removeSnowflakes();
+            
             document.getElementById('section' + to).classList.remove('active');
             document.getElementById('section' + (to - 1)).classList.add('active');
             currentStep = to - 1;
             updateProgress();
+            
+            // Reapply appropriate theme
+            if (currentStep === 2 && selectedTheme) {
+                applyTheme(selectedTheme);
+            } else if (currentStep === 1 || currentStep === 3) {
+                document.body.className = '';
+                document.getElementById('main-header').className = 'header';
+                document.getElementById('theme-indicator').classList.remove('visible');
+            }
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
